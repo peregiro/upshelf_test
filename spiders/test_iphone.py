@@ -60,9 +60,13 @@ class TestIphone(scrapy.Spider):
 
     def extract_price(self, variant_id, json_data):
         variants = json_data.get('data').get('product').get('children')
-        for variant in variants:
-            if variant.get('tcin') == variant_id:
-                return variant.get('price').get('current_retail')
+        if variants:
+            for variant in variants:
+                if variant.get('tcin') == variant_id:
+                    return variant.get('price').get('current_retail')
+        else:
+            return json_data.get('data').get('product').get('price').get('current_retail')
+
 
     def parse_item_questions(self, response):
         json_data = response.json()
