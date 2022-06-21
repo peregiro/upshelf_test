@@ -28,7 +28,11 @@ class TestIphone(scrapy.Spider):
         l.add_xpath('images_urls', '//div[@data-test="carousel"]//img[contains(@src, "/image/")]/@src')
 
         route_variant_id = '(//b[text()="TCIN"]/../text())[last()]'
-        variant_id = response.xpath(route_variant_id).extract()[0]
+        variant_id = response.xpath(route_variant_id).extract()
+        if not variant_id:
+            print('Url is not a product')
+            return
+        variant_id = variant_id[0]
 
         route_product_id = '//syndigo-powerpage/@pageid'
         self.product_id = response.xpath(route_product_id).extract()[0]
